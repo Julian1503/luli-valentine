@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "My Love - Valentine's Day Special",
+  title: "Para mi ninita - feliz san valentin",
   description: "A special place created just for you, my love",
 };
 

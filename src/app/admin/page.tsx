@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SettingsManager from "@/components/SettingsManager";
 
 type Settings = {
     heroImageUrl?: string | null;
@@ -40,104 +41,6 @@ type Secret = {
     imageUrl: string | null;
     code: string;
 };
-
-function SettingsManager() {
-    const { toast } = useToast();
-    const [settings, setSettings] = React.useState<Settings | null>(null);
-    const [loading, setLoading] = React.useState(true);
-    const [saving, setSaving] = React.useState(false);
-
-    const load = React.useCallback(async () => {
-        setLoading(true);
-        try {
-            const res = await fetch("/api/settings", { cache: "no-store" });
-            if (!res.ok) throw new Error("Failed to load settings");
-            const data = (await res.json()) as Settings;
-            setSettings(data);
-        } catch {
-            toast({ title: "Error", description: "Failed to load settings", variant: "error" });
-        } finally {
-            setLoading(false);
-        }
-    }, [toast]);
-
-    React.useEffect(() => {
-        void load();
-    }, [load]);
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setSaving(true);
-
-        const formData = new FormData(e.currentTarget);
-        const payload = {
-            heroImageUrl: String(formData.get("heroImageUrl") ?? ""),
-            heroTitle: String(formData.get("heroTitle") ?? ""),
-            togetherDate: String(formData.get("togetherDate") ?? ""),
-        };
-
-        try {
-            const res = await fetch("/api/settings", {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-
-            if (!res.ok) throw new Error("Failed to update settings");
-
-            toast({ title: "Settings updated!", variant: "success" });
-            await load();
-        } catch {
-            toast({ title: "Error", description: "Failed to update settings", variant: "error" });
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    if (loading) {
-        return (
-            <Card>
-                <CardHeader><CardTitle>App Settings</CardTitle></CardHeader>
-                <CardContent className="flex items-center gap-2">
-                    <Loader2 className="animate-spin" />
-                    <span>Loading...</span>
-                </CardContent>
-            </Card>
-        );
-    }
-
-    return (
-        <Card>
-            <CardHeader><CardTitle>App Settings</CardTitle></CardHeader>
-            <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                        <Label>Hero Image URL</Label>
-                        <Input
-                            name="heroImageUrl"
-                            defaultValue={settings?.heroImageUrl ?? ""}
-                            placeholder="https://..."
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label>Hero Title</Label>
-                        <Input name="heroTitle" defaultValue={settings?.heroTitle ?? ""} />
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label>Relationship Start Date</Label>
-                        <Input name="togetherDate" type="date" defaultValue={settings?.togetherDate ?? ""} />
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={saving}>
-                        {saving ? <Loader2 className="animate-spin" /> : "Save Settings"}
-                    </Button>
-                </form>
-            </CardContent>
-        </Card>
-    );
-}
 
 function MemoriesManager() {
     const { toast } = useToast();

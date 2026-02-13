@@ -21,17 +21,17 @@ export default function MemoriesClient({ memories }: { memories: Memory[] }) {
         <PageTransition>
             <header className="text-center mb-16 space-y-4">
                 <h1 className="text-4xl md:text-6xl font-display text-foreground">
-                    Memory Lane
+                    Recuerditos de nusotros
                 </h1>
                 <p className="text-muted-foreground max-w-lg mx-auto">
-                    Every picture tells a story of us. Here are some of my absolute favorites.
+                    Cada foto cuenta una historia nuestra. Aca están algunas de mis favoritas, lejos.
                 </p>
             </header>
 
             {sortedMemories.length === 0 ? (
                 <div className="text-center py-20 bg-white/50 rounded-2xl border border-dashed border-primary/20">
                     <p className="text-lg text-muted-foreground">
-                        No memories yet. Add some in the Admin panel!
+                        Todavia no hay recuerdos. ¡Agrega algunos en el panel de admin!
                     </p>
                 </div>
             ) : (

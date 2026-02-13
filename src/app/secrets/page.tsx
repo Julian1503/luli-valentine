@@ -57,9 +57,9 @@ export default function Secrets() {
         <PageTransition>
             {showConfetti && <Confetti width={width} height={height} numberOfPieces={200} colors={['#ff69b4', '#ff1493', '#ffc0cb']} />}
             <header className="text-center mb-12">
-                <h1 className="text-4xl md:text-5xl font-display text-foreground mb-4">Secret Vault</h1>
+                <h1 className="text-4xl md:text-5xl font-display text-foreground mb-4">Boveda de los secretos</h1>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                    Enter the secret codes I&apos;ve hidden in your real-world gifts to unlock special messages here.
+                    Ingresá los códigos secretos que escondi en tus regalos en la vida real para desbloquear mensajes especiales aca
                 </p>
             </header>
 
@@ -68,24 +68,21 @@ export default function Secrets() {
                     <form onSubmit={handleUnlock} className="space-y-4">
                         <div className="text-center mb-2">
               <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                Challenge Mode
+                Modo Desafio
               </span>
                         </div>
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <Input
-                                placeholder="Enter answer or secret code..."
+                                placeholder="Ingresa la respuesta o el codigo secreto..."
                                 className="pl-9 bg-white"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                             />
                         </div>
                         <Button type="submit" className="w-full" disabled={unlockMutation.isPending}>
-                            {unlockMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Unlock Secret"}
+                            {unlockMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Desbloquear secreto"}
                         </Button>
-                        <p className="text-xs text-center text-muted-foreground italic">
-                            Hint: You might need to solve a riddle or remember a special moment!
-                        </p>
                     </form>
                 </Card>
             </div>
@@ -147,7 +144,7 @@ export default function Secrets() {
                 {unlockedSecrets.length === 0 && (
                     <div className="col-span-full text-center py-20 opacity-50">
                         <Lock className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                        <p className="text-lg text-muted-foreground">The vault is empty. Find a code to begin.</p>
+                        <p className="text-lg text-muted-foreground">La boveda esta vacia. Encontra un codigo para empezar.</p>
                     </div>
                 )}
             </div>

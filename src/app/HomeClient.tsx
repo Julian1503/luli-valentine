@@ -20,7 +20,7 @@ export default function HomeClient({
     settings: Settings;
     diffDays: number;
 }) {
-    const heroTitle = settings.heroTitle ?? "My Love";
+    const heroTitle = settings.heroTitle ?? "Mi ninita";
 
     return (
         <PageTransition>
@@ -50,7 +50,7 @@ export default function HomeClient({
                     )}
 
                     <div className="inline-block px-6 py-2 rounded-full romantic-gradient text-white font-semibold text-sm tracking-widest uppercase shadow-lg">
-                        ✨ Happy Valentine&apos;s Day ✨
+                        ✨ Feliz dia de los enamorados ✨
                     </div>
 
                     <h1 className="text-6xl md:text-7xl lg:text-9xl font-display font-bold text-foreground leading-tight">
@@ -61,9 +61,8 @@ export default function HomeClient({
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        I created this little corner of the internet just for you, my darling,
-                        to celebrate <span className="font-handwriting text-2xl text-primary font-bold">us</span> and all
-                        the beautiful moments we share together. 💕
+                        Hice este pequeno regalito para que podamos apreciar lo lindo que es <span className="font-handwriting text-2xl text-primary font-bold">nuestro</span> amor
+                        y todos los momentos hermosos que compartimos 💕
                     </p>
                 </div>
 
@@ -73,22 +72,22 @@ export default function HomeClient({
                             <div className="h-14 w-14 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mb-6 mx-auto shadow-lg">
                                 <Calendar className="w-7 h-7 text-white" />
                             </div>
-                            <h3 className="text-2xl font-display font-bold mb-3 text-foreground">Our Memories</h3>
+                            <h3 className="text-2xl font-display font-bold mb-3 text-foreground">Nuestros recuerdos</h3>
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                A beautiful journey through our favorite moments together. Every memory is precious. ❤️
+                                Un viaje hermoso por nuestros momentos favoritos juntos, cada recuerdo es re valioso ❤️
                             </p>
                         </Card>
                     </Link>
 
                     <div className="flex flex-col items-center justify-center p-8 romantic-card rounded-2xl shadow-xl">
                         <span className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">
-                            Together For
+                            Estuvimos juntos por
                         </span>
                         <span className="text-6xl md:text-7xl font-display font-bold romantic-text-gradient">
                             {diffDays}
                         </span>
                         <span className="text-sm text-muted-foreground mt-2 font-handwriting text-lg">
-                            Wonderful Days
+                            Hermosos dias y estoy feliz por tener mas
                         </span>
                     </div>
 
@@ -97,9 +96,9 @@ export default function HomeClient({
                             <div className="h-14 w-14 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center mb-6 mx-auto shadow-lg">
                                 <Heart className="w-7 h-7 text-white fill-white" />
                             </div>
-                            <h3 className="text-2xl font-display font-bold mb-3 text-foreground">Love Quiz</h3>
+                            <h3 className="text-2xl font-display font-bold mb-3 text-foreground">Preguntitas</h3>
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                How well do you know us? Let&apos;s find out together! 💝
+                                Que tan bien nos conoces 💝 pruebita sorpresa
                             </p>
                         </Card>
                     </Link>
@@ -110,13 +109,13 @@ export default function HomeClient({
                         size="lg"
                         className="romantic-gradient rounded-full px-10 h-16 text-lg font-semibold shadow-2xl text-white border-2 border-white/50 hover:scale-105 transition-transform duration-300"
                     >
-                        Start Our Journey Together <ArrowRight className="ml-2 w-6 h-6" />
+                        Comenzar nuestro viajecito <ArrowRight className="ml-2 w-6 h-6" />
                     </Button>
                 </Link>
 
                 <div className="max-w-xl mx-auto mt-8 px-4">
                     <p className="font-elegant text-2xl md:text-3xl text-primary/80 italic">
-                        &quot;In your eyes, I found my home. In your heart, I found my love.&quot;
+                        &quot;Desde que estas en mi vida, entendi que el amor no es prometerlo todo, sino elegirte cada dia en las cosas pequeñas… y ahi es donde siempre te encuentro.&quot;
                     </p>
                 </div>
             </div>

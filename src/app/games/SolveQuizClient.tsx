@@ -79,9 +79,9 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
 
             <header className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-display text-foreground mb-4">
-                    Love Quiz
+                    Quiz de amor
                 </h1>
-                <p className="text-muted-foreground">How well do you remember our story?</p>
+                <p className="text-muted-foreground">Que tan bien te acordas de nuestra historia? 😈</p>
             </header>
 
             <div className="max-w-2xl mx-auto space-y-8">
@@ -146,7 +146,7 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
 
                 {quizzes.length === 0 && (
                     <div className="text-center text-muted-foreground py-12">
-                        No quizzes available yet.
+                        Nada por aqui.
                     </div>
                 )}
             </div>

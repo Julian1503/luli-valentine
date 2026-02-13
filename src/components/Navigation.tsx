@@ -10,11 +10,10 @@ export function Navigation() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/memories", label: "Memories", icon: Image },
-    { href: "/games", label: "Play", icon: Heart },
-    { href: "/secrets", label: "Vault", icon: Key },
-    { href: "/admin", label: "Admin", icon: Settings, hidden: true },
+    { href: "/", label: "Inicio", icon: Home },
+    { href: "/memories", label: "Recuerdos", icon: Image },
+    { href: "/games", label: "Jueguito", icon: Heart },
+    { href: "/secrets", label: "Adivina", icon: Key },
   ];
 
   return (
