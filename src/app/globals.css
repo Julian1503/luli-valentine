@@ -126,3 +126,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/50;
+  }
+}

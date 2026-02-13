@@ -1,11 +1,13 @@
+"use client";
+
 import { Heart, Image, Key, Settings, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {useRouter} from "next/router";
+import { usePathname } from "next/navigation";
 
 export function Navigation() {
-  const router = useRouter();
+  const pathname = usePathname();
 
   const links = [
     { href: "/", label: "Home", icon: Home },
@@ -19,7 +21,7 @@ export function Navigation() {
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:top-0 md:bottom-auto md:p-6 flex justify-center pointer-events-none">
       <nav className="glass-card px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl shadow-primary/10 pointer-events-auto">
         {links.map((link) => {
-          const isActive = router.pathname === link.href;
+          const isActive = pathname === link.href;
           return (
             <Link key={link.href} href={link.href}>
               <div
