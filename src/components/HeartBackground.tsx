@@ -3,13 +3,15 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-// Generate random hearts
-const hearts = Array.from({ length: 20 }).map((_, i) => ({
+// Generate random hearts with more variety
+const hearts = Array.from({ length: 30 }).map((_, i) => ({
   id: i,
-  size: Math.random() * 20 + 10,
+  size: Math.random() * 24 + 12,
   left: Math.random() * 100,
-  duration: Math.random() * 20 + 10,
-  delay: Math.random() * 10,
+  duration: Math.random() * 25 + 15,
+  delay: Math.random() * 15,
+  opacity: Math.random() * 0.4 + 0.1,
+  char: ['❤', '💕', '💖', '💗', '💝', '💓'][Math.floor(Math.random() * 6)],
 }));
 
 export function HeartBackground() {
@@ -22,28 +24,61 @@ export function HeartBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="floating-hearts pointer-events-none fixed inset-0 z-0 opacity-40">
-      {hearts.map((heart) => (
-        <motion.div
-          key={heart.id}
-          className="absolute text-primary/20"
-          initial={{ y: "110vh", x: `${heart.left}vw`, rotate: 0 }}
-          animate={{ 
-            y: "-10vh", 
-            rotate: 360,
-            x: `${heart.left + (Math.random() * 10 - 5)}vw` // Mild swaying
-          }}
-          transition={{
-            duration: heart.duration,
-            repeat: Infinity,
-            delay: heart.delay,
-            ease: "linear",
-          }}
-          style={{ fontSize: heart.size }}
-        >
-          ❤
-        </motion.div>
-      ))}
-    </div>
+    <>
+      {/* Floating hearts */}
+      <div className="floating-hearts pointer-events-none fixed inset-0 z-0">
+        {hearts.map((heart) => (
+          <motion.div
+            key={heart.id}
+            className="absolute"
+            style={{
+              fontSize: heart.size,
+              opacity: heart.opacity,
+            }}
+            initial={{ y: "110vh", x: `${heart.left}vw`, rotate: 0 }}
+            animate={{
+              y: "-10vh",
+              rotate: 360,
+              x: `${heart.left + (Math.random() * 15 - 7.5)}vw`,
+            }}
+            transition={{
+              duration: heart.duration,
+              repeat: Infinity,
+              delay: heart.delay,
+              ease: "linear",
+            }}
+          >
+            {heart.char}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Sparkles effect */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <motion.div
+            key={`sparkle-${i}`}
+            className="absolute text-yellow-300"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              fontSize: Math.random() * 12 + 8,
+            }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0.5, 1.2, 0.5],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: "easeInOut",
+            }}
+          >
+            ✨
+          </motion.div>
+        ))}
+      </div>
+    </>
   );
 }
