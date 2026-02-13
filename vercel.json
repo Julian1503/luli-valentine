@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "prebuild": "prisma generate && prisma migrate deploy",
-    "build": "next build"
-  }
-}
