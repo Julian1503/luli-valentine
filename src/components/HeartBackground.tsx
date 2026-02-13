@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-// Generate random hearts with more variety
-const hearts = Array.from({ length: 30 }).map((_, i) => ({
+// Generate random hearts with more variety (reduced from 30 to 12 for better performance)
+const hearts = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   size: Math.random() * 24 + 12,
   left: Math.random() * 100,
@@ -53,9 +53,9 @@ export function HeartBackground() {
         ))}
       </div>
 
-      {/* Sparkles effect */}
+      {/* Sparkles effect (reduced from 15 to 6 for better performance) */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        {Array.from({ length: 15 }).map((_, i) => (
+        {Array.from({ length: 6 }).map((_, i) => (
           <motion.div
             key={`sparkle-${i}`}
             className="absolute text-yellow-300"
