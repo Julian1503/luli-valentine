@@ -229,7 +229,7 @@ function MemoriesManager() {
                         </div>
                         <div className="space-y-2">
                             <Label>Date</Label>
-                            <Input name="date" required />
+                            <Input name="date" type="date" required />
                         </div>
                     </div>
                     <div className="space-y-2">
@@ -309,6 +309,15 @@ function QuizzesManager() {
         const formData = new FormData(e.currentTarget);
         const optionsText = String(formData.get("options") ?? "");
         const options = optionsText.split("\n").filter(o => o.trim());
+
+        if (options.length < 2) {
+            toast({ 
+                title: "Error", 
+                description: "Please provide at least 2 options for the quiz", 
+                variant: "error" 
+            });
+            return;
+        }
 
         const payload = {
             question: String(formData.get("question") ?? ""),
