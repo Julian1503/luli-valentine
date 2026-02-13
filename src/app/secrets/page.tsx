@@ -112,7 +112,7 @@ export default function Secrets() {
                                             transition={{ duration: 0.6 }}
                                             className="w-full h-full"
                                         >
-                                            <img src={secret.imageUrl} alt={secret.title} className="w-full h-full object-cover" />
+                                            <img src={secret.imageUrl} alt={secret.title ?? "Secret"} className="w-full h-full object-cover" />
                                         </motion.div>
                                         <div className="absolute top-2 right-2">
                                             <motion.div

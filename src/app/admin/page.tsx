@@ -60,7 +60,7 @@ export function SettingsManager() {
             if (!res.ok) throw new Error("Failed to update settings");
 
             toast({ title: "Settings updated!", variant: "success" });
-            await load(); // re-sync UI con DB
+            await load(); // re-sync UI with DB
         } catch {
             toast({ title: "Error", description: "Failed to update settings", variant: "error" });
         } finally {
@@ -110,5 +110,14 @@ export function SettingsManager() {
                 </form>
             </CardContent>
         </Card>
+    );
+}
+
+export default function AdminPage() {
+    return (
+        <div className="container mx-auto py-12 px-4">
+            <h1 className="text-3xl font-bold mb-8">Admin Panel</h1>
+            <SettingsManager />
+        </div>
     );
 }

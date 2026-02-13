@@ -8,19 +8,24 @@ export type InsertSettings = Partial<{
 export type Settings = Awaited<ReturnType<PrismaStorage["getSettings"]>>;
 
 export type InsertMemory = {
-    title?: string | null;
-    content: string;
+    title: string;
+    description: string;
+    imageUrl?: string | null;
+    date: string;
     order?: number;
 };
 
 export type InsertQuiz = {
     question: string;
     correctAnswer: string;
+    options: string[];
+    successMessage?: string | null;
 };
 
 export type InsertSecret = {
     title?: string | null;
     content?: string | null;
+    imageUrl?: string | null;
     code: string;
 };
 
@@ -74,8 +79,10 @@ export class PrismaStorage implements IStorage {
     async createMemory(memory: InsertMemory) {
         return prisma.memory.create({
             data: {
-                title: memory.title ?? null,
-                content: memory.content,
+                title: memory.title,
+                description: memory.description,
+                imageUrl: memory.imageUrl ?? null,
+                date: memory.date,
                 order: memory.order ?? 0,
             },
         });
@@ -99,6 +106,8 @@ export class PrismaStorage implements IStorage {
             data: {
                 question: quiz.question,
                 correctAnswer: quiz.correctAnswer,
+                options: quiz.options,
+                successMessage: quiz.successMessage ?? null,
             },
         });
     }
@@ -123,6 +132,7 @@ export class PrismaStorage implements IStorage {
             data: {
                 title: secret.title ?? null,
                 content: secret.content ?? null,
+                imageUrl: secret.imageUrl ?? null,
                 code: secret.code,
             },
         });
