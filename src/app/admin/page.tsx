@@ -60,7 +60,7 @@ export function SettingsManager() {
             if (!res.ok) throw new Error("Failed to update settings");
 
             toast({ title: "Settings updated!", variant: "success" });
-            await load(); // re-sync UI con DB
+            await load(); // re-sync UI with DB
         } catch {
             toast({ title: "Error", description: "Failed to update settings", variant: "error" });
         } finally {
