@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Image, Key, Settings, Home } from "lucide-react";
+import { Heart, Image, Key, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";

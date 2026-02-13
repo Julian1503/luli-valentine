@@ -1,6 +1,6 @@
 "use client"
 import { PageTransition } from "@/components/PageTransition";
-import { useSecrets, useUnlockSecret } from "@/hooks/use-secrets";
+import { useUnlockSecret } from "@/hooks/use-secrets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -47,7 +47,7 @@ export default function Secrets() {
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Invalid code or connection error.",
+                description: "Invalid code or connection error." + error,
                 variant: "error",
             });
         }
