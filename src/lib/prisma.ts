@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import {PrismaBetterSqlite3} from "@prisma/adapter-better-sqlite3";
+import { PrismaPostgresAdapter } from "@prisma/adapter-ppg";
 
 declare global {
     var prisma: PrismaClient | undefined;
@@ -8,8 +8,8 @@ declare global {
 export const prisma =
     global.prisma ??
     new PrismaClient({
-        adapter: new PrismaBetterSqlite3({
-            url: process.env.DATABASE_URL || "file:./dev.db",
+        adapter: new PrismaPostgresAdapter({
+            connectionString: process.env.DATABASE_URL || "file:./dev.db",
         })
     });
 
