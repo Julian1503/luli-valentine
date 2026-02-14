@@ -20,12 +20,6 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 
-type Settings = {
-    heroImageUrl?: string | null;
-    heroTitle?: string | null;
-    togetherDate?: string | null;
-};
-
 type Memory = {
     id: number;
     title: string;

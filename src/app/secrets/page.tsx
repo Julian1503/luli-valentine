@@ -89,7 +89,7 @@ export default function Secrets() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <AnimatePresence>
-                    {unlockedSecrets.map((secret, i) => (
+                    {unlockedSecrets.map((secret) => (
                         <motion.div
                             key={secret.id}
                             initial={{ opacity: 0, scale: 0.9 }}

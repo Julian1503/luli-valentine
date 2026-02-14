@@ -44,10 +44,17 @@ function MemoryCard({ memory, index, onClick }: { memory: Memory; index: number;
                 setCurrentImageIndex((prev) => (prev + 1) % images.length);
             }, 2500); // Change every 2.5 seconds
             return () => clearInterval(interval);
-        } else {
-            setCurrentImageIndex(0);
         }
+        // Don't reset to 0 synchronously in effect
     }, [isHovering, hasMultipleImages, images.length]);
+
+    // Reset to first image when hover ends
+    useEffect(() => {
+        if (!isHovering && currentImageIndex !== 0) {
+            const timer = setTimeout(() => setCurrentImageIndex(0), 100);
+            return () => clearTimeout(timer);
+        }
+    }, [isHovering, currentImageIndex]);
 
     // Get current description
     const descriptions = memory.descriptions && Array.isArray(memory.descriptions) && memory.descriptions.length > 0
