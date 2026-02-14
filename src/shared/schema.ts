@@ -4,6 +4,7 @@ import { z } from "zod";
 export type Settings = {
     id: number;
     heroImageUrl?: string | null;
+    heroImageUrl2?: string | null;
     heroTitle?: string | null;
     togetherDate?: string | null;
     createdAt: Date;
@@ -15,6 +16,8 @@ export type Memory = {
     title: string;
     description: string;
     imageUrl?: string | null;
+    imageUrls?: any | null;  // JSON field containing string[]
+    descriptions?: any | null;  // JSON field containing string[]
     date: string;
     order: number;
     createdAt: Date;
@@ -49,6 +52,8 @@ export const insertMemorySchema = z.object({
     title: z.string(),
     description: z.string(),
     imageUrl: z.string().nullable().optional(),
+    imageUrls: z.array(z.string()).nullable().optional(),
+    descriptions: z.array(z.string()).nullable().optional(),
     date: z.string(),
     order: z.number().optional(),
 });
@@ -69,6 +74,7 @@ export const insertSecretSchema = z.object({
 
 export const insertSettingsSchema = z.object({
     heroImageUrl: z.string().nullable().optional(),
+    heroImageUrl2: z.string().nullable().optional(),
     heroTitle: z.string().nullable().optional(),
     togetherDate: z.string().nullable().optional(),
 });

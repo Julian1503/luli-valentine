@@ -35,7 +35,15 @@ export type InsertSecret = {
 
 export interface IStorage {
     // Settings
-    getSettings(): Promise<{ id: number; createdAt: Date; updatedAt: Date } & Record<string, any>>;
+    getSettings(): Promise<{
+        id: number;
+        heroImageUrl: string | null;
+        heroImageUrl2: string | null;
+        heroTitle: string | null;
+        togetherDate: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     updateSettings(settings: InsertSettings): Promise<any>;
 
     // Memories
@@ -67,7 +75,14 @@ export class PrismaStorage implements IStorage {
     async getSettings() {
         const existing = await prisma.settings.findFirst();
         if (existing) return existing;
-        return prisma.settings.create({ data: {} });
+        return prisma.settings.create({ 
+            data: {
+                heroImageUrl: null,
+                heroImageUrl2: null,
+                heroTitle: null,
+                togetherDate: null,
+            }
+        });
     }
 
     async updateSettings(update: InsertSettings) {
@@ -95,8 +110,8 @@ export class PrismaStorage implements IStorage {
                 title: memory.title,
                 description: memory.description,
                 imageUrl: memory.imageUrl ?? null,
-                imageUrls: memory.imageUrls ?? null,
-                descriptions: memory.descriptions ?? null,
+                imageUrls: memory.imageUrls ? JSON.parse(JSON.stringify(memory.imageUrls)) : null,
+                descriptions: memory.descriptions ? JSON.parse(JSON.stringify(memory.descriptions)) : null,
                 date: memory.date,
                 order: memory.order ?? 0,
             },
@@ -114,8 +129,8 @@ export class PrismaStorage implements IStorage {
                 ...(memory.title !== undefined && { title: memory.title }),
                 ...(memory.description !== undefined && { description: memory.description }),
                 ...(memory.imageUrl !== undefined && { imageUrl: memory.imageUrl }),
-                ...(memory.imageUrls !== undefined && { imageUrls: memory.imageUrls }),
-                ...(memory.descriptions !== undefined && { descriptions: memory.descriptions }),
+                ...(memory.imageUrls !== undefined && { imageUrls: memory.imageUrls ? JSON.parse(JSON.stringify(memory.imageUrls)) : null }),
+                ...(memory.descriptions !== undefined && { descriptions: memory.descriptions ? JSON.parse(JSON.stringify(memory.descriptions)) : null }),
                 ...(memory.date !== undefined && { date: memory.date }),
                 ...(memory.order !== undefined && { order: memory.order }),
             },
@@ -136,7 +151,7 @@ export class PrismaStorage implements IStorage {
             data: {
                 question: quiz.question,
                 correctAnswer: quiz.correctAnswer,
-                options: quiz.options,
+                options: JSON.parse(JSON.stringify(quiz.options)),
                 successMessage: quiz.successMessage ?? null,
             },
         });
@@ -158,7 +173,7 @@ export class PrismaStorage implements IStorage {
             data: {
                 ...(quiz.question !== undefined && { question: quiz.question }),
                 ...(quiz.correctAnswer !== undefined && { correctAnswer: quiz.correctAnswer }),
-                ...(quiz.options !== undefined && { options: quiz.options }),
+                ...(quiz.options !== undefined && { options: JSON.parse(JSON.stringify(quiz.options)) }),
                 ...(quiz.successMessage !== undefined && { successMessage: quiz.successMessage }),
             },
         });
