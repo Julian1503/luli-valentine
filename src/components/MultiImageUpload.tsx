@@ -23,7 +23,7 @@ export function MultiImageUpload({ values, onChange, label = "Imágenes" }: Prop
     const pickFile = (f: File | null) => {
         if (!f) return;
         if (!ACCEPT.includes(f.type)) {
-            toast({ title: "Archivo inválido", description: "Usa PNG, JPG, o WEBP.", variant: "error" });
+            toast({ title: "Archivo inválido", description: "Usá PNG, JPG, o WEBP.", variant: "error" });
             return;
         }
         setFile(f);
@@ -90,7 +90,7 @@ export function MultiImageUpload({ values, onChange, label = "Imágenes" }: Prop
         } catch (e) {
             toast({
                 title: "Fallo la subida",
-                description: e instanceof Error ? e.message : "Intenta de nuevo.",
+                description: e instanceof Error ? e.message : "Intentá de nuevo.",
                 variant: "error",
             });
         } finally {
@@ -184,7 +184,7 @@ export function MultiImageUpload({ values, onChange, label = "Imágenes" }: Prop
             </div>
 
             <p className="text-xs text-muted-foreground">
-                Sube primero las imágenes → luego haz clic en <b>Crear Recuerdo</b> para guardar en la BD.
+                Sube primero las imágenes → luego hacé clic en <b>Crear Recuerdo</b> para guardar en la BD.
             </p>
         </div>
     );

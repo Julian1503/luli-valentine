@@ -16,10 +16,9 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
 
 export async function GET(_: Request, ctx: { params: Promise<{ id: string }> }) {
     const params = await ctx.params;
-    const memory = await storage.getMemories();
-    const found = memory.find(m => m.id === Number(params.id));
-    if (!found) {
+    const memory = await storage.getMemory(Number(params.id));
+    if (!memory) {
         return new NextResponse(null, { status: 404 });
     }
-    return NextResponse.json(found);
+    return NextResponse.json(memory);
 }

@@ -38,6 +38,7 @@ export interface IStorage {
 
     // Memories
     getMemories(): Promise<any[]>;
+    getMemory(id: number): Promise<any | null>;
     createMemory(memory: InsertMemory): Promise<any>;
     updateMemory(id: number, memory: Partial<InsertMemory>): Promise<any>;
     deleteMemory(id: number): Promise<void>;
@@ -80,6 +81,10 @@ export class PrismaStorage implements IStorage {
         return prisma.memory.findMany({
             orderBy: [{ order: "desc" }, { id: "desc" }],
         });
+    }
+
+    async getMemory(id: number) {
+        return prisma.memory.findUnique({ where: { id } });
     }
 
     async createMemory(memory: InsertMemory) {
