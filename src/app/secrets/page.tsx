@@ -33,21 +33,21 @@ export default function Secrets() {
                 setTimeout(() => setShowConfetti(false), 5000);
 
                 toast({
-                    title: "Secret Unlocked! 🔓",
-                    description: "A new memory has been revealed.",
+                    title: "¡Secreto Desbloqueado! 🔓",
+                    description: "Un nuevo recuerdo ha sido revelado.",
                     className: "bg-primary text-primary-foreground",
                 });
             } else {
                 toast({
-                    title: "Locked",
-                    description: "That code doesn't seem to work. Try again!",
+                    title: "Bloqueado",
+                    description: "Ese código no parece funcionar. ¡Intentá de nuevo!",
                     variant: "error",
                 });
             }
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Invalid code or connection error." + error,
+                description: "Código inválido o error de conexión." + error,
                 variant: "error",
             });
         }
@@ -124,7 +124,7 @@ export default function Secrets() {
                                 <div className="p-6 relative">
                                     <div className="flex items-center gap-2 mb-4 text-primary">
                                         <Sparkles className="w-5 h-5 animate-pulse" />
-                                        <span className="text-sm font-bold uppercase tracking-wider">Unlocked</span>
+                                        <span className="text-sm font-bold uppercase tracking-wider">Desbloqueado</span>
                                     </div>
                                     <h3 className="text-2xl font-display font-bold mb-3">{secret.title}</h3>
                                     <motion.p

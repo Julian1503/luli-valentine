@@ -23,7 +23,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
     const pickFile = (f: File | null) => {
         if (!f) return;
         if (!ACCEPT.includes(f.type)) {
-            toast({ title: "Invalid file", description: "Use PNG, JPG, or WEBP.", variant: "error" });
+            toast({ title: "Archivo inválido", description: "Usá PNG, JPG, o WEBP.", variant: "error" });
             return;
         }
         setFile(f);
@@ -56,7 +56,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
         setUploading(true);
         try {
             const signRes = await fetch("/api/cloudinary/sign", { method: "POST" });
-            if (!signRes.ok) throw new Error("Failed to sign upload");
+            if (!signRes.ok) throw new Error("Fallo al firmar la subida");
             const sign = (await signRes.json()) as {
                 cloudName: string;
                 apiKey: string;
@@ -77,20 +77,20 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
                 { method: "POST", body: fd }
             );
 
-            if (!cloudRes.ok) throw new Error("Cloudinary upload failed");
+            if (!cloudRes.ok) throw new Error("Fallo la subida a Cloudinary");
             const cloud = await cloudRes.json();
 
             const url = String(cloud.secure_url ?? "");
-            if (!url) throw new Error("Missing secure_url");
+            if (!url) throw new Error("URL segura no encontrada");
 
             onChange(url);
             setFile(null);
 
-            toast({ title: "Uploaded!", description: "Image ready to save.", variant: "success" });
+            toast({ title: "¡Subida exitosa!", description: "Imagen lista para guardar.", variant: "success" });
         } catch (e) {
             toast({
-                title: "Upload failed",
-                description: e instanceof Error ? e.message : "Try again.",
+                title: "Fallo la subida",
+                description: e instanceof Error ? e.message : "Intentá de nuevo.",
                 variant: "error",
             });
         } finally {
@@ -110,7 +110,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
                         onClick={() => onChange("")}
                         className="text-destructive"
                     >
-                        <X className="mr-1 h-4 w-4" /> Remove
+                        <X className="mr-1 h-4 w-4" /> Eliminar
                     </Button>
                 ) : null}
             </div>
@@ -120,7 +120,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
                 <div className="overflow-hidden rounded-lg border bg-muted/20">
                     <img
                         src={file ? URL.createObjectURL(file) : (value as string)}
-                        alt="Preview"
+                        alt="Vista previa"
                         className="h-48 w-full object-cover"
                     />
                 </div>
@@ -138,12 +138,12 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
                 )}
             >
                 <Upload className="mb-2 h-8 w-8 text-muted-foreground" />
-                <p className="text-sm font-medium">Drag & drop an image</p>
+                <p className="text-sm font-medium">Arrastrá y soltá una imagen</p>
                 <p className="text-xs text-muted-foreground mb-3">PNG, JPG, WEBP</p>
 
                 <div className="flex gap-2">
                     <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
-                        Browse
+                        Explorar
                     </Button>
 
                     <Button
@@ -153,7 +153,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
                         disabled={!file || uploading}
                     >
                         {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        Upload
+                        Subir
                     </Button>
                 </div>
 
@@ -167,7 +167,7 @@ export function UploadDropzone({ value, onChange, label = "Hero Image" }: Props)
             </div>
 
             <p className="text-xs text-muted-foreground">
-                Upload first → then click <b>Save Settings</b> to persist in DB.
+                Subí primero → luego hacé clic en <b>Guardar Configuración</b> para guardar en la BD.
             </p>
         </div>
     );

@@ -47,14 +47,14 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
                 setTimeout(() => setShowConfetti(false), 3000);
 
                 toast({
-                    title: "Correct! ❤️",
-                    description: result.message || "You know me so well!",
+                    title: "¡Correcto! ❤️",
+                    description: result.message || "¡Me conocés muy bien!",
                     variant: "success",
                 });
             } else {
                 toast({
-                    title: "Not quite...",
-                    description: "Try again, my love!",
+                    title: "No del todo...",
+                    description: "¡Intentá de nuevo, mi amor!",
                     variant: "error",
                 });
             }
@@ -63,7 +63,7 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
         } catch {
             toast({
                 title: "Error",
-                description: "Something went wrong submitting your answer.",
+                description: "Algo salió mal al enviar tu respuesta.",
                 variant: "error",
             });
         } finally {
@@ -81,7 +81,7 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
                 <h1 className="text-4xl md:text-5xl font-display text-foreground mb-4">
                     Quiz de amor
                 </h1>
-                <p className="text-muted-foreground">Que tan bien te acordas de nuestra historia? 😈</p>
+                <p className="text-muted-foreground">¿Qué tan bien te acordás de nuestra historia? 😈</p>
             </header>
 
             <div className="max-w-2xl mx-auto space-y-8">
@@ -146,7 +146,7 @@ export default function GamesClient({ quizzes }: { quizzes: Quiz[] }) {
 
                 {quizzes.length === 0 && (
                     <div className="text-center text-muted-foreground py-12">
-                        Nada por aqui.
+                        Nada por acá.
                     </div>
                 )}
             </div>
