@@ -121,7 +121,7 @@ export default function HomeClient({
                         <span className="text-6xl md:text-7xl font-display font-bold romantic-text-gradient">
                             {diffDays}
                         </span>
-                        <span className="text-sm text-muted-foreground mt-2 font-handwriting text-lg">
+                        <span className=" text-muted-foreground mt-2 font-handwriting text-xl">
                             Hermosos días y estoy feliz por tener más
                         </span>
                     </div>
