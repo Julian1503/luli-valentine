@@ -3,12 +3,14 @@
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Heart, Calendar, ArrowRight, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
+import { Heart, Calendar, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 
 type Settings = {
     heroImageUrl?: string | null;
+    heroImageUrl2?: string | null;
     heroTitle?: string | null;
     togetherDate?: string | null;
 };
@@ -21,6 +23,21 @@ export default function HomeClient({
     diffDays: number;
 }) {
     const heroTitle = settings.heroTitle ?? "Mi ninita";
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [isFlipping, setIsFlipping] = useState(false);
+
+    const handleFlip = () => {
+        if (isFlipping || !settings.heroImageUrl2) return;
+        setIsFlipping(true);
+        setTimeout(() => {
+            setIsFlipped(!isFlipped);
+            setIsFlipping(false);
+        }, 300);
+    };
+
+    const currentImage = isFlipped && settings.heroImageUrl2 
+        ? settings.heroImageUrl2 
+        : settings.heroImageUrl;
 
     return (
         <PageTransition>
@@ -34,18 +51,36 @@ export default function HomeClient({
                 </div>
 
                 <div className="space-y-8 relative z-10 px-4">
-                    {settings.heroImageUrl && (
+                    {currentImage && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.6 }}
-                            className="w-56 h-56 md:w-72 md:h-72 mx-auto mb-8 rounded-full overflow-hidden border-8 border-white shadow-2xl shadow-pink-300/50"
+                            animate={{ 
+                                opacity: 1, 
+                                scale: 1,
+                                rotateY: isFlipping ? 180 : 0
+                            }}
+                            transition={{ 
+                                duration: 0.6,
+                                rotateY: { duration: 0.6 }
+                            }}
+                            onClick={handleFlip}
+                            className={`w-56 h-56 md:w-72 md:h-72 mx-auto mb-8 rounded-full overflow-hidden border-8 border-white shadow-2xl shadow-pink-300/50 ${
+                                settings.heroImageUrl2 ? 'cursor-pointer hover:scale-105 transition-transform' : ''
+                            }`}
+                            style={{ transformStyle: 'preserve-3d' }}
                         >
-                            <img
-                                src={settings.heroImageUrl}
-                                alt="Us"
-                                className="w-full h-full object-cover"
-                            />
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={isFlipped ? 'flipped' : 'normal'}
+                                    src={currentImage}
+                                    alt="Nosotros"
+                                    className="w-full h-full object-cover"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </AnimatePresence>
                         </motion.div>
                     )}
 
@@ -61,7 +96,7 @@ export default function HomeClient({
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Hice este pequeno regalito para que podamos apreciar lo lindo que es <span className="font-handwriting text-2xl text-primary font-bold">nuestro</span> amor
+                        Hice este pequeño regalito para que podamos apreciar lo lindo que es <span className="font-handwriting text-2xl text-primary font-bold">nuestro</span> amor
                         y todos los momentos hermosos que compartimos 💕
                     </p>
                 </div>
@@ -87,7 +122,7 @@ export default function HomeClient({
                             {diffDays}
                         </span>
                         <span className="text-sm text-muted-foreground mt-2 font-handwriting text-lg">
-                            Hermosos dias y estoy feliz por tener mas
+                            Hermosos días y estoy feliz por tener más
                         </span>
                     </div>
 
@@ -98,7 +133,7 @@ export default function HomeClient({
                             </div>
                             <h3 className="text-2xl font-display font-bold mb-3 text-foreground">Preguntitas</h3>
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                Que tan bien nos conoces 💝 pruebita sorpresa
+                                Qué tan bien nos conocés 💝 pruebita sorpresa
                             </p>
                         </Card>
                     </Link>
@@ -115,7 +150,7 @@ export default function HomeClient({
 
                 <div className="max-w-xl mx-auto mt-8 px-4">
                     <p className="font-elegant text-2xl md:text-3xl text-primary/80 italic">
-                        &quot;Desde que estas en mi vida, entendi que el amor no es prometerlo todo, sino elegirte cada dia en las cosas pequeñas… y ahi es donde siempre te encuentro.&quot;
+                        &quot;Desde que estás en mi vida, entendí que el amor no es prometerlo todo, sino elegirte cada día en las cosas pequeñas… y ahí es donde siempre te encuentro.&quot;
                     </p>
                 </div>
             </div>

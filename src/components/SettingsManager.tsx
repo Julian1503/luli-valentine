@@ -11,6 +11,7 @@ import {UploadDropzone} from "@/components/UploadDropzone";
 
 type Settings = {
     heroImageUrl?: string | null;
+    heroImageUrl2?: string | null;
     heroTitle?: string | null;
     togetherDate?: string | null;
 };
@@ -20,6 +21,7 @@ export default function SettingsManager() {
 
     const [settings, setSettings] = React.useState<Settings | null>(null);
     const [heroImageUrl, setHeroImageUrl] = React.useState<string>("");
+    const [heroImageUrl2, setHeroImageUrl2] = React.useState<string>("");
 
     const [loading, setLoading] = React.useState(true);
     const [saving, setSaving] = React.useState(false);
@@ -28,12 +30,13 @@ export default function SettingsManager() {
         setLoading(true);
         try {
             const res = await fetch("/api/settings", { cache: "no-store" });
-            if (!res.ok) throw new Error("Failed to load settings");
+            if (!res.ok) throw new Error("Fallo al cargar configuración");
             const data = (await res.json()) as Settings;
             setSettings(data);
             setHeroImageUrl(data.heroImageUrl ?? "");
+            setHeroImageUrl2(data.heroImageUrl2 ?? "");
         } catch {
-            toast({ title: "Error", description: "Failed to load settings", variant: "error" });
+            toast({ title: "Error", description: "Fallo al cargar configuración", variant: "error" });
         } finally {
             setLoading(false);
         }
@@ -52,6 +55,7 @@ export default function SettingsManager() {
 
         const payload = {
             heroImageUrl: heroImageUrl || null,
+            heroImageUrl2: heroImageUrl2 || null,
             heroTitle: String(formData.get("heroTitle") ?? ""),
             togetherDate: String(formData.get("togetherDate") ?? ""),
         };
@@ -63,14 +67,14 @@ export default function SettingsManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Failed to update settings");
+            if (!res.ok) throw new Error("Fallo al actualizar configuración");
 
-            toast({ title: "Settings updated!", variant: "success" });
+            toast({ title: "¡Configuración actualizada!", variant: "success" });
             await load();
         } catch (err) {
             toast({
                 title: "Error",
-                description: err instanceof Error ? err.message : "Failed to update settings",
+                description: err instanceof Error ? err.message : "Fallo al actualizar configuración",
                 variant: "error",
             });
         } finally {
@@ -81,10 +85,10 @@ export default function SettingsManager() {
     if (loading) {
         return (
             <Card>
-                <CardHeader><CardTitle>App Settings</CardTitle></CardHeader>
+                <CardHeader><CardTitle>Configuración de la Aplicación</CardTitle></CardHeader>
                 <CardContent className="flex items-center gap-2">
                     <Loader2 className="animate-spin" />
-                    <span>Loading...</span>
+                    <span>Cargando...</span>
                 </CardContent>
             </Card>
         );
@@ -92,28 +96,34 @@ export default function SettingsManager() {
 
     return (
         <Card>
-            <CardHeader><CardTitle>App Settings</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Configuración de la Aplicación</CardTitle></CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <UploadDropzone
                         value={heroImageUrl}
                         onChange={(url) => setHeroImageUrl(url)}
-                        label="Hero image"
+                        label="Imagen principal (lado 1)"
+                    />
+
+                    <UploadDropzone
+                        value={heroImageUrl2}
+                        onChange={(url) => setHeroImageUrl2(url)}
+                        label="Imagen principal (lado 2) - opcional para efecto moneda"
                     />
 
                     <div className="space-y-2">
-                        <Label>Hero Title</Label>
+                        <Label>Título Principal</Label>
                         <Input name="heroTitle" defaultValue={settings?.heroTitle ?? ""} />
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Relationship Start Date</Label>
+                        <Label>Fecha de Inicio de la Relación</Label>
                         <Input name="togetherDate" type="date" defaultValue={settings?.togetherDate ?? ""} />
                     </div>
 
                     <Button type="submit" className="w-full" disabled={saving}>
                         {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        Save Settings
+                        Guardar Configuración
                     </Button>
                 </form>
             </CardContent>
