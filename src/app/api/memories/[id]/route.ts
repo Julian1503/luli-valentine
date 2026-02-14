@@ -6,3 +6,20 @@ export async function DELETE(_: Request, ctx: { params: Promise<{ id: string }> 
     await storage.deleteMemory(Number(params.id));
     return new NextResponse(null, { status: 204 });
 }
+
+export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }) {
+    const params = await ctx.params;
+    const body = await req.json();
+    const updated = await storage.updateMemory(Number(params.id), body);
+    return NextResponse.json(updated);
+}
+
+export async function GET(_: Request, ctx: { params: Promise<{ id: string }> }) {
+    const params = await ctx.params;
+    const memory = await storage.getMemories();
+    const found = memory.find(m => m.id === Number(params.id));
+    if (!found) {
+        return new NextResponse(null, { status: 404 });
+    }
+    return NextResponse.json(found);
+}

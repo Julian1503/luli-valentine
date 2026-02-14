@@ -11,6 +11,8 @@ export type InsertMemory = {
     title: string;
     description: string;
     imageUrl?: string | null;
+    imageUrls?: string[] | null;  // Multiple images
+    descriptions?: string[] | null;  // Multiple descriptions (one per image or single for all)
     date: string;
     order?: number;
 };
@@ -37,18 +39,22 @@ export interface IStorage {
     // Memories
     getMemories(): Promise<any[]>;
     createMemory(memory: InsertMemory): Promise<any>;
+    updateMemory(id: number, memory: Partial<InsertMemory>): Promise<any>;
     deleteMemory(id: number): Promise<void>;
 
     // Quizzes
     getQuizzes(): Promise<any[]>;
     getQuiz(id: number): Promise<any | null>;
     createQuiz(quiz: InsertQuiz): Promise<any>;
+    updateQuiz(id: number, quiz: Partial<InsertQuiz>): Promise<any>;
     solveQuiz(id: number, answer: string): Promise<boolean>;
     deleteQuiz(id: number): Promise<void>;
 
     // Secrets
     getSecrets(): Promise<any[]>;
+    getSecret(id: number): Promise<any | null>;
     createSecret(secret: InsertSecret): Promise<any>;
+    updateSecret(id: number, secret: Partial<InsertSecret>): Promise<any>;
     unlockSecret(code: string): Promise<any | null>;
     deleteSecret(id: number): Promise<void>;
 }
@@ -82,6 +88,8 @@ export class PrismaStorage implements IStorage {
                 title: memory.title,
                 description: memory.description,
                 imageUrl: memory.imageUrl ?? null,
+                imageUrls: memory.imageUrls ?? null,
+                descriptions: memory.descriptions ?? null,
                 date: memory.date,
                 order: memory.order ?? 0,
             },
@@ -90,6 +98,21 @@ export class PrismaStorage implements IStorage {
 
     async deleteMemory(id: number) {
         await prisma.memory.delete({ where: { id } });
+    }
+
+    async updateMemory(id: number, memory: Partial<InsertMemory>) {
+        return prisma.memory.update({
+            where: { id },
+            data: {
+                ...(memory.title !== undefined && { title: memory.title }),
+                ...(memory.description !== undefined && { description: memory.description }),
+                ...(memory.imageUrl !== undefined && { imageUrl: memory.imageUrl }),
+                ...(memory.imageUrls !== undefined && { imageUrls: memory.imageUrls }),
+                ...(memory.descriptions !== undefined && { descriptions: memory.descriptions }),
+                ...(memory.date !== undefined && { date: memory.date }),
+                ...(memory.order !== undefined && { order: memory.order }),
+            },
+        });
     }
 
     // Quizzes
@@ -122,6 +145,18 @@ export class PrismaStorage implements IStorage {
         await prisma.quiz.delete({ where: { id } });
     }
 
+    async updateQuiz(id: number, quiz: Partial<InsertQuiz>) {
+        return prisma.quiz.update({
+            where: { id },
+            data: {
+                ...(quiz.question !== undefined && { question: quiz.question }),
+                ...(quiz.correctAnswer !== undefined && { correctAnswer: quiz.correctAnswer }),
+                ...(quiz.options !== undefined && { options: quiz.options }),
+                ...(quiz.successMessage !== undefined && { successMessage: quiz.successMessage }),
+            },
+        });
+    }
+
     // Secrets
     async getSecrets() {
         return prisma.secret.findMany({ orderBy: { id: "desc" } });
@@ -144,6 +179,22 @@ export class PrismaStorage implements IStorage {
 
     async deleteSecret(id: number) {
         await prisma.secret.delete({ where: { id } });
+    }
+
+    async getSecret(id: number) {
+        return prisma.secret.findUnique({ where: { id } });
+    }
+
+    async updateSecret(id: number, secret: Partial<InsertSecret>) {
+        return prisma.secret.update({
+            where: { id },
+            data: {
+                ...(secret.title !== undefined && { title: secret.title }),
+                ...(secret.content !== undefined && { content: secret.content }),
+                ...(secret.imageUrl !== undefined && { imageUrl: secret.imageUrl }),
+                ...(secret.code !== undefined && { code: secret.code }),
+            },
+        });
     }
 }
 
