@@ -103,15 +103,23 @@ function MemoriesManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Failed to create memory");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to create memory: ${errorText}`);
+            }
 
             toast({ title: "¡Recuerdo creado!", variant: "success" });
             e.currentTarget.reset();
             setNewMemoryImages([]);
             setNewMemoryDescriptions("");
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al crear recuerdo", variant: "error" });
+        } catch (error) {
+            console.error("Error creating memory:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al crear recuerdo", 
+                variant: "error" 
+            });
         }
     };
 
@@ -148,14 +156,24 @@ function MemoriesManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Failed to update memory");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to update memory: ${errorText}`);
+            }
 
             toast({ title: "¡Recuerdo actualizado!", variant: "success" });
             setDialogOpen(false);
             setEditingMemory(null);
+            setEditImages([]);
+            setEditDescriptions("");
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al actualizar recuerdo", variant: "error" });
+        } catch (error) {
+            console.error("Error updating memory:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al actualizar recuerdo", 
+                variant: "error" 
+            });
         }
     };
 
@@ -374,13 +392,21 @@ function QuizzesManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Fallo al crear trivia");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to create quiz: ${errorText}`);
+            }
 
             toast({ title: "¡Trivia creada!", variant: "success" });
             e.currentTarget.reset();
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al crear trivia", variant: "error" });
+        } catch (error) {
+            console.error("Error creating quiz:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al crear trivia", 
+                variant: "error" 
+            });
         }
     };
 
@@ -420,14 +446,23 @@ function QuizzesManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Fallo al actualizar trivia");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to update quiz: ${errorText}`);
+            }
 
             toast({ title: "¡Trivia actualizada!", variant: "success" });
             setDialogOpen(false);
             setEditingQuiz(null);
+            setEditOptions("");
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al actualizar trivia", variant: "error" });
+        } catch (error) {
+            console.error("Error updating quiz:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al actualizar trivia", 
+                variant: "error" 
+            });
         }
     };
 
@@ -620,14 +655,22 @@ function SecretsManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Fallo al crear secreto");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to create secret: ${errorText}`);
+            }
 
             toast({ title: "¡Secreto creado!", variant: "success" });
             e.currentTarget.reset();
             setNewSecretImageUrl("");
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al crear secreto", variant: "error" });
+        } catch (error) {
+            console.error("Error creating secret:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al crear secreto", 
+                variant: "error" 
+            });
         }
     };
 
@@ -657,14 +700,23 @@ function SecretsManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Fallo al actualizar secreto");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to update secret: ${errorText}`);
+            }
 
             toast({ title: "¡Secreto actualizado!", variant: "success" });
             setDialogOpen(false);
             setEditingSecret(null);
+            setEditImageUrl("");
             await load();
-        } catch {
-            toast({ title: "Error", description: "Fallo al actualizar secreto", variant: "error" });
+        } catch (error) {
+            console.error("Error updating secret:", error);
+            toast({ 
+                title: "Error", 
+                description: error instanceof Error ? error.message : "Fallo al actualizar secreto", 
+                variant: "error" 
+            });
         }
     };
 

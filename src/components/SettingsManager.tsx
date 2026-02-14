@@ -67,11 +67,15 @@ export default function SettingsManager() {
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Fallo al actualizar configuración");
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to update settings: ${errorText}`);
+            }
 
             toast({ title: "¡Configuración actualizada!", variant: "success" });
             await load();
         } catch (err) {
+            console.error("Error updating settings:", err);
             toast({
                 title: "Error",
                 description: err instanceof Error ? err.message : "Fallo al actualizar configuración",

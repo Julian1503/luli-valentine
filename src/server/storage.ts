@@ -1,8 +1,10 @@
 import { prisma } from "@/lib/prisma";
 
 export type InsertSettings = Partial<{
-    theme: "light" | "dark";
-    language: "en" | "fr";
+    heroImageUrl: string | null;
+    heroImageUrl2: string | null;
+    heroTitle: string | null;
+    togetherDate: string | null;
 }>;
 
 export type Settings = Awaited<ReturnType<PrismaStorage["getSettings"]>>;
