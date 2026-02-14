@@ -9,7 +9,7 @@ export const prisma =
     global.prisma ??
     new PrismaClient({
         adapter: new PrismaPostgresAdapter({
-            connectionString: process.env.DATABASE_URL || "file:./dev.db",
+            connectionString: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/postgres?schema=public",
         })
     });
 

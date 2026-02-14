@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SettingsManager from "@/components/SettingsManager";
+import { UploadDropzone } from "@/components/UploadDropzone";
 
 type Settings = {
     heroImageUrl?: string | null;
@@ -47,6 +48,9 @@ function MemoriesManager() {
     const [memories, setMemories] = React.useState<Memory[]>([]);
     const [loading, setLoading] = React.useState(true);
 
+    // NEW: dropzone state for "create memory"
+    const [newMemoryImageUrl, setNewMemoryImageUrl] = React.useState<string>("");
+
     const load = React.useCallback(async () => {
         setLoading(true);
         try {
@@ -68,10 +72,12 @@ function MemoriesManager() {
     const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+
         const payload = {
             title: String(formData.get("title") ?? ""),
             description: String(formData.get("description") ?? ""),
-            imageUrl: String(formData.get("imageUrl") ?? ""),
+            // NEW: use dropzone url (nullable)
+            imageUrl: newMemoryImageUrl || null,
             date: String(formData.get("date") ?? ""),
             order: Number(formData.get("order") ?? 0),
         };
@@ -87,6 +93,8 @@ function MemoriesManager() {
 
             toast({ title: "Memory created!", variant: "success" });
             e.currentTarget.reset();
+            // NEW: reset dropzone state
+            setNewMemoryImageUrl("");
             await load();
         } catch {
             toast({ title: "Error", description: "Failed to create memory", variant: "error" });
@@ -108,7 +116,9 @@ function MemoriesManager() {
     if (loading) {
         return (
             <Card>
-                <CardHeader><CardTitle>Memories</CardTitle></CardHeader>
+                <CardHeader>
+                    <CardTitle>Memories</CardTitle>
+                </CardHeader>
                 <CardContent className="flex items-center gap-2">
                     <Loader2 className="animate-spin" />
                     <span>Loading...</span>
@@ -119,12 +129,15 @@ function MemoriesManager() {
 
     return (
         <Card>
-            <CardHeader><CardTitle>Memories</CardTitle></CardHeader>
+            <CardHeader>
+                <CardTitle>Memories</CardTitle>
+            </CardHeader>
             <CardContent className="space-y-6">
                 <form onSubmit={handleCreate} className="space-y-4 p-4 border rounded-lg bg-muted/50">
                     <h3 className="font-semibold flex items-center gap-2">
                         <Plus className="w-4 h-4" /> Add New Memory
                     </h3>
+
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label>Title</Label>
@@ -135,21 +148,35 @@ function MemoriesManager() {
                             <Input name="date" type="date" required />
                         </div>
                     </div>
+
                     <div className="space-y-2">
                         <Label>Description</Label>
                         <Textarea name="description" required />
                     </div>
+
+                    {/* NEW: same dropzone UX as settings */}
+                    <UploadDropzone
+                        value={newMemoryImageUrl}
+                        onChange={setNewMemoryImageUrl}
+                        label="Memory image"
+                    />
+
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label>Image URL</Label>
-                            <Input name="imageUrl" placeholder="https://..." />
-                        </div>
                         <div className="space-y-2">
                             <Label>Order</Label>
                             <Input name="order" type="number" defaultValue="0" />
                         </div>
+
+                        {/* Optional: keep layout symmetric; remove if you want */}
+                        <div className="space-y-2">
+                            <Label>Image URL (read-only)</Label>
+                            <Input value={newMemoryImageUrl} readOnly placeholder="Upload an image to generate a URL" />
+                        </div>
                     </div>
-                    <Button type="submit" className="w-full">Create Memory</Button>
+
+                    <Button type="submit" className="w-full">
+                        Create Memory
+                    </Button>
                 </form>
 
                 <div className="space-y-3">
@@ -159,19 +186,12 @@ function MemoriesManager() {
                     ) : (
                         <div className="space-y-2">
                             {memories.map((memory) => (
-                                <div
-                                    key={memory.id}
-                                    className="flex items-center justify-between p-3 border rounded-lg"
-                                >
+                                <div key={memory.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex-1">
                                         <p className="font-medium">{memory.title}</p>
                                         <p className="text-sm text-muted-foreground">{memory.date}</p>
                                     </div>
-                                    <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => handleDelete(memory.id)}
-                                    >
+                                    <Button variant="destructive" size="sm" onClick={() => handleDelete(memory.id)}>
                                         <Trash2 className="w-4 h-4" />
                                     </Button>
                                 </div>
@@ -211,13 +231,13 @@ function QuizzesManager() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const optionsText = String(formData.get("options") ?? "");
-        const options = optionsText.split("\n").filter(o => o.trim());
+        const options = optionsText.split("\n").filter((o) => o.trim());
 
         if (options.length < 2) {
-            toast({ 
-                title: "Error", 
-                description: "Please provide at least 2 options for the quiz", 
-                variant: "error" 
+            toast({
+                title: "Error",
+                description: "Please provide at least 2 options for the quiz",
+                variant: "error",
             });
             return;
         }
@@ -261,7 +281,9 @@ function QuizzesManager() {
     if (loading) {
         return (
             <Card>
-                <CardHeader><CardTitle>Quizzes</CardTitle></CardHeader>
+                <CardHeader>
+                    <CardTitle>Quizzes</CardTitle>
+                </CardHeader>
                 <CardContent className="flex items-center gap-2">
                     <Loader2 className="animate-spin" />
                     <span>Loading...</span>
@@ -272,29 +294,38 @@ function QuizzesManager() {
 
     return (
         <Card>
-            <CardHeader><CardTitle>Quizzes</CardTitle></CardHeader>
+            <CardHeader>
+                <CardTitle>Quizzes</CardTitle>
+            </CardHeader>
             <CardContent className="space-y-6">
                 <form onSubmit={handleCreate} className="space-y-4 p-4 border rounded-lg bg-muted/50">
                     <h3 className="font-semibold flex items-center gap-2">
                         <Plus className="w-4 h-4" /> Add New Quiz
                     </h3>
+
                     <div className="space-y-2">
                         <Label>Question</Label>
                         <Input name="question" required />
                     </div>
+
                     <div className="space-y-2">
                         <Label>Correct Answer</Label>
                         <Input name="correctAnswer" required />
                     </div>
+
                     <div className="space-y-2">
                         <Label>Options (one per line)</Label>
-                        <Textarea name="options" placeholder="Option 1&#10;Option 2&#10;Option 3" required />
+                        <Textarea name="options" placeholder={"Option 1\nOption 2\nOption 3"} required />
                     </div>
+
                     <div className="space-y-2">
                         <Label>Success Message</Label>
                         <Input name="successMessage" placeholder="Great job!" />
                     </div>
-                    <Button type="submit" className="w-full">Create Quiz</Button>
+
+                    <Button type="submit" className="w-full">
+                        Create Quiz
+                    </Button>
                 </form>
 
                 <div className="space-y-3">
@@ -304,21 +335,12 @@ function QuizzesManager() {
                     ) : (
                         <div className="space-y-2">
                             {quizzes.map((quiz) => (
-                                <div
-                                    key={quiz.id}
-                                    className="flex items-center justify-between p-3 border rounded-lg"
-                                >
+                                <div key={quiz.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex-1">
                                         <p className="font-medium">{quiz.question}</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Answer: {quiz.correctAnswer}
-                                        </p>
+                                        <p className="text-sm text-muted-foreground">Answer: {quiz.correctAnswer}</p>
                                     </div>
-                                    <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => handleDelete(quiz.id)}
-                                    >
+                                    <Button variant="destructive" size="sm" onClick={() => handleDelete(quiz.id)}>
                                         <Trash2 className="w-4 h-4" />
                                     </Button>
                                 </div>
@@ -335,6 +357,9 @@ function SecretsManager() {
     const { toast } = useToast();
     const [secrets, setSecrets] = React.useState<Secret[]>([]);
     const [loading, setLoading] = React.useState(true);
+
+    // NEW: dropzone state for "create secret"
+    const [newSecretImageUrl, setNewSecretImageUrl] = React.useState<string>("");
 
     const load = React.useCallback(async () => {
         setLoading(true);
@@ -357,10 +382,12 @@ function SecretsManager() {
     const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+
         const payload = {
             title: String(formData.get("title") ?? ""),
             content: String(formData.get("content") ?? ""),
-            imageUrl: String(formData.get("imageUrl") ?? ""),
+            // NEW: use dropzone url (nullable)
+            imageUrl: newSecretImageUrl || null,
             code: String(formData.get("code") ?? ""),
         };
 
@@ -375,6 +402,8 @@ function SecretsManager() {
 
             toast({ title: "Secret created!", variant: "success" });
             e.currentTarget.reset();
+            // NEW: reset dropzone state
+            setNewSecretImageUrl("");
             await load();
         } catch {
             toast({ title: "Error", description: "Failed to create secret", variant: "error" });
@@ -396,7 +425,9 @@ function SecretsManager() {
     if (loading) {
         return (
             <Card>
-                <CardHeader><CardTitle>Secrets</CardTitle></CardHeader>
+                <CardHeader>
+                    <CardTitle>Secrets</CardTitle>
+                </CardHeader>
                 <CardContent className="flex items-center gap-2">
                     <Loader2 className="animate-spin" />
                     <span>Loading...</span>
@@ -407,29 +438,45 @@ function SecretsManager() {
 
     return (
         <Card>
-            <CardHeader><CardTitle>Secrets</CardTitle></CardHeader>
+            <CardHeader>
+                <CardTitle>Secrets</CardTitle>
+            </CardHeader>
             <CardContent className="space-y-6">
                 <form onSubmit={handleCreate} className="space-y-4 p-4 border rounded-lg bg-muted/50">
                     <h3 className="font-semibold flex items-center gap-2">
                         <Plus className="w-4 h-4" /> Add New Secret
                     </h3>
+
                     <div className="space-y-2">
                         <Label>Title</Label>
                         <Input name="title" />
                     </div>
+
                     <div className="space-y-2">
                         <Label>Content</Label>
                         <Textarea name="content" />
                     </div>
+
+                    {/* NEW: same dropzone UX as settings */}
+                    <UploadDropzone
+                        value={newSecretImageUrl}
+                        onChange={setNewSecretImageUrl}
+                        label="Secret image"
+                    />
+
                     <div className="space-y-2">
-                        <Label>Image URL</Label>
-                        <Input name="imageUrl" placeholder="https://..." />
+                        <Label>Image URL (read-only)</Label>
+                        <Input value={newSecretImageUrl} readOnly placeholder="Upload an image to generate a URL" />
                     </div>
+
                     <div className="space-y-2">
                         <Label>Unlock Code</Label>
                         <Input name="code" required placeholder="SECRET123" />
                     </div>
-                    <Button type="submit" className="w-full">Create Secret</Button>
+
+                    <Button type="submit" className="w-full">
+                        Create Secret
+                    </Button>
                 </form>
 
                 <div className="space-y-3">
@@ -439,21 +486,12 @@ function SecretsManager() {
                     ) : (
                         <div className="space-y-2">
                             {secrets.map((secret) => (
-                                <div
-                                    key={secret.id}
-                                    className="flex items-center justify-between p-3 border rounded-lg"
-                                >
+                                <div key={secret.id} className="flex items-center justify-between p-3 border rounded-lg">
                                     <div className="flex-1">
                                         <p className="font-medium">{secret.title || "Untitled Secret"}</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Code: {secret.code}
-                                        </p>
+                                        <p className="text-sm text-muted-foreground">Code: {secret.code}</p>
                                     </div>
-                                    <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => handleDelete(secret.id)}
-                                    >
+                                    <Button variant="destructive" size="sm" onClick={() => handleDelete(secret.id)}>
                                         <Trash2 className="w-4 h-4" />
                                     </Button>
                                 </div>
@@ -477,15 +515,19 @@ export default function AdminPage() {
                     <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
                     <TabsTrigger value="secrets">Secrets</TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="settings">
                     <SettingsManager />
                 </TabsContent>
+
                 <TabsContent value="memories">
                     <MemoriesManager />
                 </TabsContent>
+
                 <TabsContent value="quizzes">
                     <QuizzesManager />
                 </TabsContent>
+
                 <TabsContent value="secrets">
                     <SecretsManager />
                 </TabsContent>
