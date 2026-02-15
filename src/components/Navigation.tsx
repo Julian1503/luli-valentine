@@ -12,8 +12,8 @@ export function Navigation() {
   const links = [
     { href: "/", label: "Inicio", icon: Home },
     { href: "/memories", label: "Recuerdos", icon: Image },
-    { href: "/games", label: "Jueguito", icon: Heart },
-    { href: "/secrets", label: "Adivina", icon: Key },
+    // { href: "/games", label: "Jueguito", icon: Heart },
+    // { href: "/secrets", label: "Adivina", icon: Key },
   ];
 
   return (
